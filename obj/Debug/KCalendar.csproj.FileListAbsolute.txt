@@ -1,0 +1,5 @@
+G:\Projects\Web\Bargh\Bargh\KCalendar\bin\Debug\KCalendar.dll
+G:\Projects\Web\Bargh\Bargh\KCalendar\bin\Debug\KCalendar.pdb
+G:\Projects\Web\Bargh\Bargh\KCalendar\obj\Debug\KCalendar.dll
+G:\Projects\Web\Bargh\Bargh\KCalendar\obj\Debug\KCalendar.pdb
+G:\Projects\Web\Bargh\Bargh\KCalendar\obj\Debug\KCalendar.csprojResolveAssemblyReference.cache
