@@ -30,19 +30,10 @@ namespace KCalendar
         public virtual IMonth Month { get; set; }
 
         public virtual int Day { get; set; }
-        public virtual int MonthCount
-        {
-            get { return CalendarCulture.MonthCount; }
-        }
+        public virtual int MonthCount => CalendarCulture.MonthCount;
         public abstract double Epoch { get; }
 
-        public virtual double JulianDay
-        {
-            get
-            {
-                return DateToJulian(this);
-            }
-        }
+        public virtual double JulianDay => DateToJulian(this);
 
         public bool IsLeap
         {
@@ -56,14 +47,7 @@ namespace KCalendar
 
         public abstract int DayOfYear { get; }
 
-        public IWeek DayofWeek
-        {
-            get
-            {
-                return CalendarCulture.GetWeekDay((int)(Math.Ceiling(Math.Floor((JulianDay + 1.5)) % 7)) + 1);
-                //return (int) ((Math.Ceiling(j + 1.5)) % 7 )  ;
-            }
-        }
+        public IWeek DayofWeek => CalendarCulture.GetWeekDay((int)(Math.Ceiling(Math.Floor((JulianDay + 1.5)) % 7)) + 1);
 
         public abstract ICalendarLeap LeapAlgorithm { get; set; }
         public abstract ICalendar JulianToDate(double julianNumber);
@@ -198,19 +182,28 @@ namespace KCalendar
             {
                 throw new Exception("Format of string is not a date format!");
             }
-            var tmp = date.Replace('\\', '/').Split('/');
-            if (tmp == null) throw new Exception("Date Not in correct format!");
-            if (tmp[2].Length > tmp[0].Length)
+            if (calendarType is GregorianDate)
             {
-                calendarType.Year = Convert.ToInt32(tmp[2]);
-                calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
-                calendarType.Day = Convert.ToInt32(tmp[0]);
+                DateTime dt;
+                DateTime.TryParse(date, out dt);
+                return new GregorianDate(dt);
             }
             else
             {
-                calendarType.Year = Convert.ToInt32(tmp[0]);
-                calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
-                calendarType.Day = Convert.ToInt32(tmp[2]);
+                var tmp = date.Replace('\\', '/').Split('/');
+                if (tmp[2].Length > tmp[0].Length)
+                {
+                    calendarType.Year = Convert.ToInt32(tmp[2]);
+                    calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
+                    calendarType.Day = Convert.ToInt32(tmp[0]);
+                }
+                else
+                {
+                    calendarType.Year = Convert.ToInt32(tmp[0]);
+                    calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
+                    calendarType.Day = Convert.ToInt32(tmp[2]);
+                }
+
             }
             return calendarType;
         }
@@ -228,7 +221,6 @@ namespace KCalendar
         {
             return new DateTime(calendar.Year, calendar.Month, calendar.Day);
         }
-
 
         protected abstract void Init();
     }

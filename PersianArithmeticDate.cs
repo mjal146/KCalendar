@@ -6,7 +6,7 @@ namespace KCalendar
    public  class PersianArithmeticDate : Calendar
     {
         public PersianArithmeticDate() { }
-        public override double Epoch { get { return 1948320.5; } }
+        public override double Epoch => 1948320.5;
 
         protected override void Init()
         {
@@ -30,17 +30,11 @@ namespace KCalendar
             : base(new GregorianDate(dateTime).JulianDay)
         { }
 
-        public static ICalendar Today
-        {
-            get { return new PersianArithmeticDate(DateTime.Now); }
-        }
+        public static ICalendar Today => new PersianArithmeticDate(DateTime.Now);
 
-       public override int DayOfYear
-       {
-           get { return (int)(JulianDay - DateToJulian(new PersianArithmeticDate(Year, 1, 1))); }
-       }
+        public override int DayOfYear => (int)(JulianDay - DateToJulian(new PersianArithmeticDate(Year, 1, 1)));
 
-       public override ICalendarLeap LeapAlgorithm { get; set; }
+        public override ICalendarLeap LeapAlgorithm { get; set; }
 
         /// <summary>
         /// Convert Julian number to persian calendarDate 

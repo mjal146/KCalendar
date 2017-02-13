@@ -15,19 +15,13 @@ namespace KCalendar {
 
         public PersianDate(DateTime dateTime)
             : base(new GregorianDate(dateTime).JulianDay) { }
-        public override double Epoch { get { return 1948320.5; } }
+        public override double Epoch => 1948320.5;
 
-        public static ICalendar Today {
-            get { return new PersianDate(DateTime.Today); }
-        }
+        public static ICalendar Today => new PersianDate(DateTime.Today);
 
-        public override int DayOfYear {
-            get { return (int)(JulianDay - DateToJulian(new PersianDate(Year, 1, 1))); }
-        }
+        public override int DayOfYear => (int)(JulianDay - DateToJulian(new PersianDate(Year, 1, 1)));
 
-        public override double JulianDay {
-            get { return DateToJulian (this) + 0.5; }
-        }
+        public override double JulianDay => DateToJulian (this) + 0.5;
         public override ICalendarLeap LeapAlgorithm { get; set; }
 
         /// <summary>
@@ -59,23 +53,20 @@ namespace KCalendar {
         public override CalendarCulture CalendarCulture { get; set; }
 
         public override double DateToJulian(ICalendar calendarDate) {
-            double equinox;
-            double guess;
-            double jd;
             double[] adr = { calendarDate.Year - 1, 0 };
-            guess = (Epoch - 1) + (TropicalYear * ((calendarDate.Year - 1) - 1));
+            var guess = (Epoch - 1) + (TropicalYear * ((calendarDate.Year - 1) - 1));
             while (adr[0] < calendarDate.Year) {
                 adr = CalcYear(guess);
                 guess = adr[1] + (TropicalYear + 2);
             }
-            equinox = adr[1];
+            var equinox = adr[1];
 
-            jd = equinox +
-                    ((calendarDate.Month <= 7) ?
-                        ((calendarDate.Month - 1) * 31) :
-                        (((calendarDate.Month - 1) * 30) + 6)
-                    ) +
-                    (calendarDate.Day - 1);
+            var jd = equinox +
+                        ((calendarDate.Month <= 7) ?
+                                ((calendarDate.Month - 1) * 31) :
+                                (((calendarDate.Month - 1) * 30) + 6)
+                        ) +
+                        (calendarDate.Day - 1);
             return jd ;
         }
 
@@ -136,7 +127,8 @@ namespace KCalendar {
                                    March equinox, reckoned from the Tehran
                                    meridian, occurred for a given Gregorian
                                    year.  */
-        double TehranEequinoxJd(double year) {
+
+        private double TehranEequinoxJd(double year) {
             double ep;
             ep = TehranEquinox(year);
             var epg = Math.Floor(ep);

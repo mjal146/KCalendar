@@ -22,24 +22,15 @@ namespace KCalendar
         public GregorianDate(DateTime dateTime)
             : base(dateTime)
         { }
-        public override double Epoch
-        {
-            get { return 1721425.5; }
-        }
+        public override double Epoch => 1721425.5;
 
-        public static ICalendar Today
-        {
-            get { return new GregorianDate(DateTime.Today); }
-        }
+        public static ICalendar Today => new GregorianDate(DateTime.Today);
 
-        public override int DayOfYear
-        {
-            get { return (int)(JulianDay - DateToJulian(new GregorianDate(Year, 1, 1))); }
-        }
+        public override int DayOfYear => (int)(JulianDay - DateToJulian(new GregorianDate(Year, 1, 1)));
 
         public override ICalendarLeap LeapAlgorithm { get; set; }
 
-        public override sealed ICalendar JulianToDate(double julianNumber)
+        public sealed override ICalendar JulianToDate(double julianNumber)
         {
             double wjd;
             double depoch;

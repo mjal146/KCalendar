@@ -14,12 +14,10 @@ namespace KCalendar.Culture {
         }
 
         public virtual IMonth GetMonth(int month) {
-            if (month > 0 && month <= MonthCount) {
-                foreach (var item in Months)
-                    if (item.Index == month)
-                        return item;
-                throw new CalendarExceptions();
-            }
+            if(month <= 0 || month > MonthCount) throw new CalendarExceptions();
+            foreach (var item in Months)
+                if (item.Index == month)
+                    return item;
             throw new CalendarExceptions();
         }
 
