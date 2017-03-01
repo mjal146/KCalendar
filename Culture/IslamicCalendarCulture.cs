@@ -29,6 +29,9 @@
                 new IMonth("ذیقعده",11, isLeapMonth: false, normalLength: 29, leapLength: 30) ,
                 new IMonth("ذیحجه",12, isLeapMonth: false, normalLength: 29, leapLength: 30) 
             };
+
+            PMName = "مساء";
+            AMName = "صباحاً";
         }
 
         public override void SetLeap(bool isLeapYear)

@@ -22,6 +22,9 @@ namespace KCalendar
             : base(new GregorianDate(dateTime).JulianDay)
         { }
 
+        protected IslamicDate(int year, IMonth month, int day, int hour, int minute, int second, int millisecond) : base(year, month, day, hour, minute, second, millisecond) { }
+        protected IslamicDate(int year, IMonth month, int day, int hour, int minute, int second) : base(year, month, day, hour, minute, second) { }
+
         public override double Epoch => 1948439.5;
 
         public static ICalendar Today => new IslamicDate(DateTime.Now);

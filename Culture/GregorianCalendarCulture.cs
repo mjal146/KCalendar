@@ -29,6 +29,8 @@
                 new IMonth("November",11,30), 
                 new IMonth("December",12, 31)
             };
+            AMName = "AM";
+            PMName = "PM";
         }
  
     }

@@ -8,6 +8,10 @@ namespace KCalendar
         int Year { get; set; }
         IMonth Month { get; set; }
         int Day { get; set; }
+        int Hour { get; set; }
+        int Minute { get; set; }
+        int Second { get; set; }
+        int Millisecond { get; set; }
         double Epoch { get; }
         double JulianDay { get; }
         bool IsLeap { get; }

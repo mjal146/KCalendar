@@ -29,6 +29,8 @@
                 new IMonth("بهمن",11,30), 
                 new IMonth("اسفند",12, isLeapMonth: false, normalLength: 29, leapLength: 30) 
             };
+            AMName = "ق.ظ";
+            PMName = "ب.ظ";
         }
 
  

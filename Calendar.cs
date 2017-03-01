@@ -5,6 +5,7 @@ namespace KCalendar
 {
     public abstract class Calendar : PositionalAstronomy, ICalendar
     {
+
         protected Calendar()
         {
             Init();
@@ -12,6 +13,7 @@ namespace KCalendar
         protected Calendar(int year, int month, int day)
             : this()
         {
+            Init();
             Year = year;
             Month = CalendarCulture.GetMonth(month);
             Day = day;
@@ -25,11 +27,42 @@ namespace KCalendar
         protected Calendar(ICalendar iCalendar)
             : this(iCalendar.DateToJulian()) { }
 
-        protected Calendar(DateTime dateTime) : this(dateTime.Year, dateTime.Month, dateTime.Day) { }
+        protected Calendar(DateTime dateTime) : this(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond)
+        { }
+
+        protected Calendar(int year, int month, int day, int hour, int minute, int second) : this()
+        {
+            Year = year;
+            Month = CalendarCulture.GetMonth(month);
+            Day = day;
+            Hour = hour;
+            Minute = minute;
+            Second = second;
+        }
+        protected Calendar(int year, int month, int day, int hour, int minute, int second, int millisecond) : this()
+        {
+            Year = year;
+            Month = CalendarCulture.GetMonth(month);
+            Day = day;
+            Hour = hour;
+            Minute = minute;
+            Second = second;
+            Millisecond = millisecond;
+        }
+
+        #region Property
         public virtual int Year { get; set; }
         public virtual IMonth Month { get; set; }
 
         public virtual int Day { get; set; }
+
+        public virtual int Hour { get; set; }
+        public virtual int Minute { get; set; }
+        public virtual int Second { get; set; }
+        public virtual int Millisecond { get; set; }
+
+        #endregion
+
         public virtual int MonthCount => CalendarCulture.MonthCount;
         public abstract double Epoch { get; }
 

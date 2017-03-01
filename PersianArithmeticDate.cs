@@ -18,6 +18,8 @@ namespace KCalendar
             : base(year, month, day)
         { }
 
+        protected PersianArithmeticDate(int year, IMonth month, int day, int hour, int minute, int second, int millisecond) : base(year, month, day, hour, minute, second, millisecond) { }
+        protected PersianArithmeticDate(int year, IMonth month, int day, int hour, int minute, int second) : base(year, month, day, hour, minute, second) { }
         public PersianArithmeticDate(double julianNumber)
             : base(julianNumber)
         { }

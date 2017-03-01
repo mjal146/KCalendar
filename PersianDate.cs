@@ -7,6 +7,8 @@ namespace KCalendar {
         public PersianDate(int year, int month, int day)
             : base(year, month, day) { }
 
+        protected PersianDate(int year, IMonth month, int day, int hour, int minute, int second, int millisecond) : base(year, month, day, hour, minute, second, millisecond) { }
+        protected PersianDate(int year, IMonth month, int day, int hour, int minute, int second) : base(year, month, day, hour, minute, second) { }
         public PersianDate(double julianNumber)
             : base(julianNumber) { }
 
