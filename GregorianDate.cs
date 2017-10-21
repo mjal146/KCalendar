@@ -21,7 +21,7 @@ namespace KCalendar
         { }
 
         public GregorianDate(DateTime dateTime)
-            : base(dateTime)
+            : base(DateTime.SpecifyKind(dateTime,DateTimeKind.Unspecified))
         { }
         public override double Epoch => 1721425.5;
 

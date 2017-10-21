@@ -110,24 +110,24 @@ namespace KCalendar.Culture
                 return format
                 .Replace("yyyy", calendar.Year.ToString())
                 .Replace("yyy", calendar.Year.ToString())
-                .Replace("yy", calendar.Year.ToString().PadLeft(2, '0'))
+                .Replace("yy", PaddingToLeft(calendar.Year))
                 .Replace("y", (calendar.Year % 100).ToString())
                 .Replace("MMMM", calendar.Month.Name)
                 .Replace("MMM", calendar.Month.ShortName)
-                .Replace("MM", calendar.Month.Index.ToString().PadLeft(2, '0'))
+                .Replace("MM", PaddingToLeft(calendar.Month.Index))
                 .Replace("M", calendar.Month.Index.ToString())
                 .Replace("dddd", calendar.DayofWeek.Name)
                 .Replace("ddd", calendar.DayofWeek.ShortName)
-                .Replace("dd", calendar.Day.ToString("D2"))
+                .Replace("dd", PaddingToLeft(calendar.Day))
                 .Replace("d", calendar.Day.ToString())
                 .Replace("tt", calendar.Hour > 12 ? calendar.CalendarCulture.PMName : calendar.CalendarCulture.AMName)
-                .Replace("HH", calendar.Hour.ToString("D2"))
+                .Replace("HH", PaddingToLeft(calendar.Hour))
                 .Replace("H", calendar.Hour.ToString())
                 .Replace("hh", calendar.Hour > 12 ? (calendar.Hour - 1).ToString() : calendar.Hour.ToString())
-                .Replace("h", calendar.Hour > 12 ? (calendar.Hour - 1).ToString("D2") : calendar.Hour.ToString("D2"))
-                .Replace("mm", calendar.Minute.ToString("D2"))
+                .Replace("h", calendar.Hour > 12 ? PaddingToLeft(calendar.Hour - 1) : PaddingToLeft(calendar.Hour))
+                .Replace("mm", PaddingToLeft(calendar.Minute))
                 .Replace("m", calendar.Minute.ToString())
-                .Replace("ss", calendar.Second.ToString("D2"))
+                .Replace("ss", PaddingToLeft(calendar.Second))
                 .Replace("s", calendar.Second.ToString())
                 .Replace("f", (calendar.Millisecond / 100).ToString())
                 .Replace("ff", (calendar.Millisecond / 10).ToString())
@@ -147,7 +147,7 @@ namespace KCalendar.Culture
             switch (format)
             {
                 case DateFormat.Date:
-                    return calendar.Year + "/" + calendar.Month.Index.ToString().PadLeft(2, '0') + "/" + calendar.Day.ToString().PadLeft(2, '0');
+                    return calendar.Year + "/" + PaddingToLeft(calendar.Month.Index) + "/" + PaddingToLeft(calendar.Day);
 
                 case DateFormat.FullDate:
                     return calendar.DayofWeek.Name + " " + calendar.Day + " " + calendar.Month.Name + " " + calendar.Year;
@@ -162,6 +162,14 @@ namespace KCalendar.Culture
             }
         }
 
+        public string PaddingToLeft(int x)
+        {
+            if (x < 10)
+            {
+                return "0" + x;
+            }
+            return x.ToString();
+        }
 
     }
 }

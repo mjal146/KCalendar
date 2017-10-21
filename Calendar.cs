@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using KCalendar.Culture;
 
 namespace KCalendar
@@ -90,7 +91,7 @@ namespace KCalendar
             return JulianToDate(j);
         }
 
-        public IMonth ChangeMonth(int amountOfChangeMonth)
+        private IMonth ChangeMonth(int amountOfChangeMonth)
         {
             if (amountOfChangeMonth >= MonthCount || amountOfChangeMonth < 1)
                 throw new CalendarExceptions();
@@ -196,7 +197,7 @@ namespace KCalendar
         {
             if (calendarDate == null) throw new ArgumentNullException(nameof(calendarDate));
             var gd = (GregorianDate)calendarDate.CastTo(new GregorianDate());
-            var dt = new DateTime(gd.Year, gd.Month, gd.Day);
+            var dt = new DateTime(gd.Year, gd.Month, gd.Day, CultureInfo.GetCultureInfo("en-US").Calendar);
             return dt;
         }
 
@@ -218,25 +219,22 @@ namespace KCalendar
             if (calendarType is GregorianDate)
             {
                 DateTime dt;
-                DateTime.TryParse(date, out dt);
+                CultureInfo cultureInfo = new CultureInfo("en-US");
+                DateTime.TryParse(date, cultureInfo, DateTimeStyles.None, out dt);
                 return new GregorianDate(dt);
+            }
+            var tmp = date.Replace('\\', '/').Replace("-", "/").Replace(".", "/").Replace("_", "/").Split('/');
+            if (tmp[2].Length > tmp[0].Length)
+            {
+                calendarType.Year = Convert.ToInt32(tmp[2]);
+                calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
+                calendarType.Day = Convert.ToInt32(tmp[0]);
             }
             else
             {
-                var tmp = date.Replace('\\', '/').Split('/');
-                if (tmp[2].Length > tmp[0].Length)
-                {
-                    calendarType.Year = Convert.ToInt32(tmp[2]);
-                    calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
-                    calendarType.Day = Convert.ToInt32(tmp[0]);
-                }
-                else
-                {
-                    calendarType.Year = Convert.ToInt32(tmp[0]);
-                    calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
-                    calendarType.Day = Convert.ToInt32(tmp[2]);
-                }
-
+                calendarType.Year = Convert.ToInt32(tmp[0]);
+                calendarType.Month = calendarType.GetMonthInfo(Convert.ToInt32(tmp[1]));
+                calendarType.Day = Convert.ToInt32(tmp[2]);
             }
             return calendarType;
         }
@@ -256,5 +254,56 @@ namespace KCalendar
         }
 
         protected abstract void Init();
+        public ICalendar FirstNextMonth(ICalendar destinationCalendar, int month)
+        {
+            var destinationDate = CastTo(destinationCalendar);
+            destinationDate = destinationDate.GotoDate(destinationDate.Year, month, 1);
+            var thisJulianDay = JulianDay;
+            return thisJulianDay <= destinationDate.JulianDay ? destinationDate : destinationDate.GotoDate(destinationDate.Year + 1, month, 1);
+        }
+
+        public ICalendar GotoDate(int year, int month, int day)
+        {
+            Year = year;
+            Month = GetMonthInfo(month);
+            Day = day;
+            return JulianToDate(JulianDay);
+        }
+        public ICalendar GotoDate(int month, int day)
+        {
+            Month = GetMonthInfo(month);
+            Day = day;
+            return JulianToDate(JulianDay);
+        }
+
+        public ICalendar FirstNextDay(ICalendar destinationCalendarType, int month, int day)
+        {
+            var nextMonth = FirstNextMonth(destinationCalendarType, month);
+            return nextMonth.AddDay(day - 1);
+        }
+
+        public ICalendar FirstWeekDayDate(ICalendar destinationCalendar)
+        {
+            var destinationDate = CastTo(destinationCalendar);
+            var dayofWeekDayIndex = destinationDate.DayofWeek.DayIndex;
+            if (dayofWeekDayIndex == 7)
+            {
+                return destinationDate;
+            }
+            destinationDate = destinationDate.AddDay(-1 * dayofWeekDayIndex);
+            return destinationDate;
+        }
+
+        public ICalendar LastWeekDayDate(ICalendar destinationCalendar)
+        {
+            var destinationDate = CastTo(destinationCalendar);
+            var dayofWeekDayIndex = destinationDate.DayofWeek.DayIndex;
+            if (dayofWeekDayIndex == 7)
+            {
+                return destinationDate.AddDay(6);
+            }
+            destinationDate = destinationDate.AddDay(6 - dayofWeekDayIndex);
+            return destinationDate;
+        }
     }
 }

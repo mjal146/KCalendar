@@ -31,5 +31,11 @@ namespace KCalendar
         DateTime ToDateTime();
         string ToString(string format);
         string ToString(DateFormat format);
+        ICalendar FirstNextMonth(ICalendar destinationCalendar, int month);
+        ICalendar FirstWeekDayDate(ICalendar destinationCalendar);
+        ICalendar LastWeekDayDate(ICalendar destinationCalendar);
+        ICalendar FirstNextDay(ICalendar destinationCalendarType, int month,int day);
+        ICalendar GotoDate(int year, int month, int day);
+        ICalendar GotoDate(int month, int day);
     }
 }
